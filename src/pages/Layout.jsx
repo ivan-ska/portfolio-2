@@ -5,14 +5,15 @@ import { useScale } from '../lib/scale'
 
 // Общая обёртка для всех страниц. Сюда позже добавятся шапка и подвал.
 export default function Layout() {
-  const { cols, u } = useScale()
+  const { cols, u, colWidth } = useScale()
 
-  // --u и --cols доступны в CSS на любой странице
+  // --u, --cols и --col-width доступны в CSS на любой странице
   useLayoutEffect(() => {
     const root = document.documentElement.style
     root.setProperty('--u', `${u}px`)
     root.setProperty('--cols', cols)
-  }, [cols, u])
+    root.setProperty('--col-width', `${colWidth * u}px`)
+  }, [cols, u, colWidth])
 
   return (
     <ProjectsProvider>

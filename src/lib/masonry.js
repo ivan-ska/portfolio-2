@@ -5,8 +5,8 @@ import { GRID } from './scale'
 const MAX_TAIL = 7
 
 // Высота карточки в единицах макета. ratio = ширина / высота картинки.
-function cardHeight(ratio) {
-  return GRID.colWidth / ratio + GRID.caption
+function cardHeight(ratio, colWidth) {
+  return colWidth / ratio + GRID.caption
 }
 
 // Ставит карточки по очереди, каждую в самую короткую колонку (при равенстве в левую).
@@ -37,6 +37,7 @@ function* permutations(items) {
 }
 
 // ratios — пропорции превью в порядке строк таблицы (null, если картинка ещё грузится).
+// colWidth — ширина колонки в единицах макета (см. scaleFor в scale.js).
 // Возвращает позицию каждой карточки ({ col, y } или null, если её пока рано показывать)
 // и общую высоту сетки. Всё в единицах макета.
 //
@@ -44,9 +45,9 @@ function* permutations(items) {
 // 2. Последние несколько карточек перебираются во всех порядках, и выбирается тот,
 //    где колонки заканчиваются ровнее всего. Верх сетки при этом не меняется.
 // 3. Пока картинки грузятся, показываются только карточки, чьё место уже точно известно.
-export function computeLayout(ratios, cols) {
+export function computeLayout(ratios, cols, colWidth) {
   const count = ratios.length
-  const heights = ratios.map((ratio) => (ratio ? cardHeight(ratio) : 0))
+  const heights = ratios.map((ratio) => (ratio ? cardHeight(ratio, colWidth) : 0))
   const firstUnknown = ratios.findIndex((ratio) => !ratio)
   const allKnown = firstUnknown === -1
 

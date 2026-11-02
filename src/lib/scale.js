@@ -15,14 +15,30 @@ export const GRID = {
 export const MIN_COLS = 2
 export const MAX_COLS = 4
 
+// На узких экранах текст, теги, отступы и скругления крупнее, чем при простом
+// уменьшении макета. Ширина колонок от этого не меняется: сетка всё так же на весь экран.
+// От 900px и шире увеличения нет, к 480px и уже оно плавно доходит до +30%.
+const MOBILE_BOOST = 0.3
+const BOOST_FROM = 900
+const BOOST_FULL = 480
+
+function mobileBoost(width) {
+  const progress = (BOOST_FROM - width) / (BOOST_FROM - BOOST_FULL)
+  return 1 + MOBILE_BOOST * Math.min(1, Math.max(0, progress))
+}
+
 // Сколько колонок поставить и какой получится масштаб.
 // Колонок столько, чтобы каждая была как можно ближе к 464 из макета:
 // 2 колонки — до ~1190px, 3 — до ~1666px, дальше 4.
+// u — размер единицы макета в px, colWidth — ширина колонки в единицах макета
+// (464, если нет мобильного увеличения).
 export function scaleFor(width) {
   const step = GRID.colWidth + GRID.gap
   const cols = Math.min(MAX_COLS, Math.max(MIN_COLS, Math.round(width / step)))
   const designWidth = cols * step - GRID.gap + GRID.pad * 2
-  return { cols, u: width / designWidth }
+  const u = (width / designWidth) * mobileBoost(width)
+  const colWidth = (width / u - GRID.pad * 2 - GRID.gap * (cols - 1)) / cols
+  return { cols, u, colWidth }
 }
 
 function subscribe(callback) {

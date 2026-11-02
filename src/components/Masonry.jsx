@@ -8,12 +8,17 @@ import './Masonry.css'
 // Pinterest-сетка. Считает, куда поставить каждую карточку (см. lib/masonry.js),
 // и ставит её туда абсолютным позиционированием.
 export default function Masonry({ projects }) {
-  const { cols, u } = useScale()
+  const { cols, u, colWidth } = useScale()
   const { images, reportImage } = useProjects()
 
   const layout = useMemo(
-    () => computeLayout(projects.map((project) => images[project.image]?.ratio ?? null), cols),
-    [projects, images, cols],
+    () =>
+      computeLayout(
+        projects.map((project) => images[project.image]?.ratio ?? null),
+        cols,
+        colWidth,
+      ),
+    [projects, images, cols, colWidth],
   )
 
   const nothingPlaced = !layout.positions.some(Boolean)
@@ -25,7 +30,7 @@ export default function Masonry({ projects }) {
       {projects.map((project, i) => {
         const position = layout.positions[i]
         const style = position && {
-          left: (GRID.pad + position.col * (GRID.colWidth + GRID.gap)) * u,
+          left: (GRID.pad + position.col * (colWidth + GRID.gap)) * u,
           top: (GRID.top + position.y) * u,
         }
         return (
