@@ -1,0 +1,69 @@
+/* Сообщения: ошибка, пустая таблица, 404 */
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(12 * var(--u));
+  padding: calc(24 * var(--u)) calc(12 * var(--u));
+  font-size: calc(28 * var(--u));
+}
+
+.message p {
+  margin: 0;
+}
+
+.message__detail {
+  color: #888;
+  font-size: calc(18 * var(--u));
+}
+
+.text-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: calc(22 * var(--u));
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+/* Временная страница проекта */
+.project {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(24 * var(--u));
+  padding: calc(24 * var(--u)) calc(12 * var(--u));
+}
+
+.project__title {
+  margin: 0;
+  font-size: calc(80 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+}
+
+.project__meta {
+  display: flex;
+  align-items: center;
+  gap: calc(4 * var(--u));
+}
+
+.project__year {
+  margin-left: calc(8 * var(--u));
+  font-size: calc(22 * var(--u));
+}
+
+.project__cover {
+  width: calc(940 * var(--u));
+  max-width: 100%;
+  border-radius: calc(21 * var(--u));
+}
+
+.project__note {
+  margin: 0;
+  color: #888;
+  font-size: calc(18 * var(--u));
+}

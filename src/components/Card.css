@@ -1,0 +1,77 @@
+.card {
+  position: absolute;
+  display: block;
+  width: calc(464 * var(--u));
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Ещё не получила место в сетке: грузит картинку невидимкой */
+.card.is-pending {
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card__cover {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; /* чтобы при увеличении картинка не вылезала за скругление в Safari */
+  border-radius: calc(21 * var(--u));
+  background: #fff;
+}
+
+.card__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+/* Наведение на любую часть карточки чуть увеличивает превью внутри рамки */
+.card:hover .card__cover img,
+.card:focus-visible .card__cover img {
+  transform: scale(1.04);
+}
+
+.card.is-broken .card__cover {
+  background: #f2f2f2;
+}
+
+.card.is-broken .card__cover img {
+  display: none;
+}
+
+.card__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--u)); /* от названия до тегов */
+  height: calc(30 * var(--u));
+  margin-top: calc(6 * var(--u));
+}
+
+.card__tags {
+  display: flex;
+  flex-shrink: 0;
+  gap: calc(4 * var(--u));
+}
+
+.card:focus-visible {
+  outline: none;
+}
+
+.card:focus-visible .card__cover {
+  outline: calc(3 * var(--u)) solid #000;
+  outline-offset: calc(3 * var(--u));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card__cover img {
+    transition: none;
+  }
+}

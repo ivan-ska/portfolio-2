@@ -1,0 +1,46 @@
+.card-title {
+  --fade: calc(40 * var(--u)); /* ширина растворения на краю */
+  --bleed: 0.25em; /* запас сверху и снизу, чтобы не обрезались хвосты у g, y, p */
+
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--bleed) 0;
+  margin: calc(-1 * var(--bleed)) 0;
+  font-size: calc(28 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+}
+
+.card-title__track {
+  display: flex;
+  gap: calc(48 * var(--u)); /* промежуток между повторами в бегущей строке */
+  width: max-content;
+  white-space: nowrap;
+}
+
+/* Не влезает: обрезаем и растворяем правый край.
+   Если влезает, ничего не обрезаем: при плотном межбуквенном
+   последняя буква может на долю пикселя выступать за рамку. */
+.card-title.is-overflowing {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--fade)), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--fade)), transparent);
+}
+
+/* Едет: растворяются оба края */
+.card-title.is-overflowing.is-running {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade),
+    #000 calc(100% - var(--fade)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade),
+    #000 calc(100% - var(--fade)),
+    transparent
+  );
+}
