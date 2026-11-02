@@ -32,8 +32,14 @@
   transition: transform 0.2s ease;
 }
 
-/* Наведение на любую часть карточки чуть увеличивает превью внутри рамки */
-.card:hover .card__cover img,
+/* Наведение на любую часть карточки чуть увеличивает превью внутри рамки.
+   Только для мыши: на телефоне после тапа ховер «залипает». */
+@media (hover: hover) {
+  .card:hover .card__cover img {
+    transform: scale(1.04);
+  }
+}
+
 .card:focus-visible .card__cover img {
   transform: scale(1.04);
 }
