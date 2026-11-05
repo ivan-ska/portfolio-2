@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import ProjectPage from './pages/ProjectPage'
 import NotFound from './pages/NotFound'
 import './index.css'
+import './styles/text.css'
 
 // Адреса сайта. Переходы между ними происходят без перезагрузки страницы,
 // адрес в браузере меняется, «назад» и «вперёд» работают.

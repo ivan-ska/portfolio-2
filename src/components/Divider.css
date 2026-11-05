@@ -1,0 +1,17 @@
+/* Пунктир: штрих 8, промежуток 8, толщина 4. На краях половинки штриха,
+   а сам рисунок чуть растягивается, чтобы ровно уложиться в ширину (как в Figma). */
+.divider {
+  --dash: calc(8 * var(--u));
+
+  height: calc(4 * var(--u));
+  margin: 0 calc(12 * var(--u));
+  border: 0;
+  background-image: linear-gradient(
+    to right,
+    #d3dee2 25%,
+    transparent 25% 75%,
+    #d3dee2 75%
+  );
+  background-size: calc(2 * var(--dash)) 100%;
+  background-repeat: round;
+}

@@ -1,0 +1,271 @@
+/* ---------- Хиро-блок ---------- */
+
+.hero {
+  /* Цвета этой секции */
+  --hero-folder: #c6a886;
+  --hero-folder-text: #776550;
+  --hero-paper: #d3dee2;
+  --hero-paper-corner: #b3c4cc;
+  --hero-paper-text: #92a4ac;
+  --hero-mail: #028565;
+  --hero-telegram: #457caa;
+
+  /* Анимации при наведении */
+  --hero-duration: 0.35s;
+  --hero-ease: cubic-bezier(0.33, 1, 0.68, 1);
+
+  /* сверху 40; снизу 38 + половина линии разделителя = 40, как в макете */
+  padding: calc(40 * var(--u)) calc(12 * var(--u)) calc(38 * var(--u));
+}
+
+.hero__inner {
+  /* Внутри хиро своя единица: при 2 колонках он растягивается на всю ширину
+     (см. heroUnit в src/lib/scale.js). При 3–4 колонках она равна --u сетки. */
+  --u: var(--hero-u);
+  --row: calc(345 * var(--u)); /* высота строки */
+
+  display: flex;
+  gap: calc(12 * var(--u));
+}
+
+.hero__group {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+}
+
+.hero__group--contacts {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* 2 колонки: две строки, листок CV ниже */
+.hero--narrow .hero__inner {
+  flex-direction: column;
+}
+
+.hero--narrow .hero__group--contacts {
+  --row: calc(295 * var(--u));
+}
+
+.hero__portrait {
+  flex: none;
+  width: calc(345 * var(--u));
+  height: calc(345 * var(--u));
+  overflow: hidden;
+  background: #fff;
+}
+
+.hero__portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__contacts {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+  min-width: 0;
+  height: calc(var(--row) - 2 * var(--u));
+}
+
+/* Ссылки в хиро */
+.hero a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero a:focus-visible {
+  outline: calc(3 * var(--u)) solid #000;
+  outline-offset: calc(3 * var(--u));
+}
+
+/* ---------- Папка с именем ---------- */
+
+.name-folder {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: calc(464 * var(--u));
+  height: calc(345 * var(--u));
+  padding: calc(30 * var(--u)) calc(30 * var(--u)) calc(50 * var(--u));
+}
+
+.name-folder__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.name-folder__front {
+  fill: var(--hero-folder);
+}
+
+/* Листок за папкой. В покое повёрнут на 5°, при наведении выравнивается. */
+.name-folder__back {
+  fill: var(--hero-paper);
+  transform-box: fill-box;
+  transform-origin: 0 0;
+  transform: translate(6.158px, -4.082px) rotate(5deg);
+  transition: transform var(--hero-duration) var(--hero-ease);
+}
+
+.name-folder__more {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  margin: 0;
+  color: var(--hero-folder-text);
+}
+
+.name-folder__arrow {
+  transition: transform var(--hero-duration) var(--hero-ease);
+}
+
+.name-folder__name {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(30 * var(--u));
+  width: 100%;
+  text-align: center;
+}
+
+.name-folder__name h1,
+.name-folder__role {
+  margin: 0;
+}
+
+.name-folder__role {
+  color: var(--hero-folder-text);
+}
+
+/* ---------- Листок CV ---------- */
+
+.cv-sheet {
+  --corner: calc(59 * var(--u)); /* размер загнутого уголка */
+
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(226 * var(--u));
+  height: var(--row);
+  color: var(--hero-paper-text);
+}
+
+.cv-sheet__paper,
+.cv-sheet__corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition:
+    clip-path var(--hero-duration) var(--hero-ease),
+    width var(--hero-duration) var(--hero-ease),
+    height var(--hero-duration) var(--hero-ease);
+}
+
+/* Лист со срезанным углом */
+.cv-sheet__paper {
+  width: 100%;
+  height: 100%;
+  background: var(--hero-paper);
+  clip-path: polygon(var(--corner) 0, 100% 0, 100% 100%, 0 100%, 0 var(--corner));
+}
+
+/* Загнутый уголок */
+.cv-sheet__corner {
+  width: var(--corner);
+  height: var(--corner);
+  background: var(--hero-paper-corner);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.cv-sheet__label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+}
+
+.cv-sheet__clip {
+  transition: transform var(--hero-duration) var(--hero-ease);
+}
+
+/* ---------- Кнопки контактов ---------- */
+
+.contact-button {
+  display: flex;
+  flex: 1 1 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(12 * var(--u));
+  min-height: 0;
+  padding: calc(30 * var(--u));
+  border-bottom: calc(4 * var(--u)) solid currentColor;
+}
+
+.contact-button--mail {
+  color: var(--hero-mail);
+}
+
+.contact-button--telegram {
+  color: var(--hero-telegram);
+}
+
+.contact-button__icon {
+  transition: transform var(--hero-duration) var(--hero-ease);
+}
+
+/* ---------- Наведение (только мышь, плюс фокус с клавиатуры) ---------- */
+
+@media (hover: hover) {
+  .name-folder:hover .name-folder__back {
+    transform: none;
+  }
+
+  .name-folder:hover .name-folder__arrow {
+    transform: rotate(-10deg);
+  }
+
+  .cv-sheet:hover {
+    --corner: calc(79 * var(--u));
+  }
+
+  .cv-sheet:hover .cv-sheet__clip {
+    transform: rotate(10deg);
+  }
+}
+
+.cv-sheet:focus-visible {
+  --corner: calc(79 * var(--u));
+}
+
+.cv-sheet:focus-visible .cv-sheet__clip {
+  transform: rotate(10deg);
+}
+
+/* Кнопки контактов: состояние is-active ставит JS (src/lib/hover.js) */
+.contact-button--mail.is-active .contact-button__icon {
+  transform: rotate(7deg);
+}
+
+.contact-button--telegram.is-active .contact-button__icon {
+  transform: rotate(-7deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero * {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,37 @@
+/* Общие стили текста. Размеры из Figma (при ширине 1440) в единицах макета.
+   Пример: <p class="text-heading">Mail</p> */
+
+/* 56 — имя в хиро */
+.text-display {
+  font-size: calc(56 * var(--u));
+  font-weight: 500;
+  line-height: 0.9;
+}
+
+/* 42 — подписи в хиро: More, CV, Mail, Telegram, Visual designer */
+.text-heading {
+  font-size: calc(42 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* 28 — название карточки проекта */
+.text-title {
+  font-size: calc(28 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* 22 — теги */
+.text-label {
+  font-size: calc(22 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Обрезает пустоту над заглавными и под базовой линией, как «Trim» в Figma.
+   Тогда отступы в вёрстке совпадают с отступами в макете.
+   Работает в Chrome и Safari; в Firefox текст просто чуть выше. */
+.text-trim {
+  text-box: trim-both cap alphabetic;
+}

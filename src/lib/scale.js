@@ -6,8 +6,8 @@ export const GRID = {
   colWidth: 464, // ширина колонки
   gap: 12, // между колонками
   pad: 12, // отступ страницы слева и справа
-  top: 24, // отступ сетки сверху
-  bottom: 24, // отступ сетки снизу
+  top: 38, // от разделителя до карточек: 38 + половина линии = 40, как в макете
+  bottom: 120, // пустота под сеткой
   rowGap: 24, // между карточками по вертикали
   caption: 36, // подпись под превью: 6 отступ + 30 строка
 }
@@ -38,7 +38,23 @@ export function scaleFor(width) {
   const designWidth = cols * step - GRID.gap + GRID.pad * 2
   const u = (width / designWidth) * mobileBoost(width)
   const colWidth = (width / u - GRID.pad * 2 - GRID.gap * (cols - 1)) / cols
-  return { cols, u, colWidth }
+  return { cols, u, colWidth, heroU: heroUnit(width, cols, u) }
+}
+
+// Хиро-блок.
+// 3–4 колонки: одна строка. Обычно хиро в тех же единицах, что и сетка, а кнопки
+// контактов занимают остаток ширины. На очень широких экранах кнопки стали бы
+// слишком длинными, поэтому там весь хиро крупнеет, а кнопки не шире HERO_CONTACTS_MAX.
+// 2 колонки: две строки, верхняя (фото 345 + 12 + папка 464 = 821)
+// растягивается ровно на ширину сетки.
+const HERO_FIXED = 345 + 464 + 226 + 12 * 3 // фото, папка, CV и промежутки
+const HERO_CONTACTS_MAX = 570
+export const HERO_NARROW_WIDTH = 821
+
+function heroUnit(width, cols, u) {
+  const available = width - GRID.pad * 2 * u
+  if (cols >= 3) return Math.max(u, available / (HERO_FIXED + HERO_CONTACTS_MAX))
+  return available / HERO_NARROW_WIDTH
 }
 
 function subscribe(callback) {

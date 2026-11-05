@@ -117,7 +117,9 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 |---|---|
 | Колонки | 3 × **464px** |
 | Промежуток между колонками | **12px** |
-| Отступы страницы | слева/справа **12px**, сверху **24px** |
+| Отступы страницы | слева/справа **12px**, снизу под карточками **120px** |
+| Вертикальный ритм (Figma, node 4587-2301) | сверху до хиро **40** · хиро · **40** · пунктирный разделитель · **40** · карточки |
+| Разделитель | пунктир `#D3DEE2`, толщина 4, штрих 8 / промежуток 8, по краям половинки штриха. Компонент [Divider](src/components/Divider.jsx) |
 | Промежуток между карточками по вертикали | **24px** |
 | Фон страницы | белый |
 
@@ -140,9 +142,9 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 
 | Тег | Фон | Форма |
 |---|---|---|
-| `Web` | `#D0E6FF` | прямоугольник без скругления |
-| `Graphic` | `#FFD6C2` | пилюля, `border-radius: 100px` |
-| `UI/UX` | `#BCEFCA` | шестиугольник: треугольные «носики» 7×30 по бокам (`clip-path`) |
+| `Web` | `#C4DBEE` | прямоугольник без скругления |
+| `Graphic` | `#F4C5CF` | пилюля, `border-radius: 100px` |
+| `UI/UX` | `#B7D7CF` | шестиугольник: треугольные «носики» 7×30 по бокам (`clip-path`) |
 | любой другой | `#ECECEC` | прямоугольник |
 
 ### Поведение карточки
@@ -152,6 +154,55 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 - **При ховере** такое название едет бегущей строкой по кругу, растворяясь с обоих краёв. Когда курсор уходит, текст за 0.3 с плавно возвращается на место.
 - **На тач-экранах** (телефон, планшет) ховера нет, поэтому длинные названия едут сами. Анимация идёт только у названий, которые сейчас видно на экране, чтобы не тратить батарею.
 - Если в системе включено «Уменьшить движение», бегущая строка и анимации отключаются.
+
+### Хиро-блок (Figma, node 4583-2279)
+
+Над сеткой проектов: фото, папка с именем, листок CV, кнопки Mail и Telegram. Масштабируется по тем же правилам, что и сетка.
+
+| Ширина | Раскладка |
+|---|---|
+| 3–4 колонки | одна строка: фото 345 · папка 464 · CV 226 · контакты на всю оставшуюся ширину, высота 345. На очень широких экранах контакты не шире 570: вместо этого весь хиро крупнеет (`HERO_CONTACTS_MAX` в [scale.js](src/lib/scale.js)) |
+| 2 колонки | две строки: фото + папка (растянуты на всю ширину сетки), ниже CV (мобильный листок, высота 295) + контакты |
+
+При 2 колонках у хиро своя единица `--hero-u`: верхняя строка (345 + 12 + 464 = 821) всегда занимает ровно ширину сетки.
+
+**Цвета секции** заданы переменными в начале [Hero.css](src/components/hero/Hero.css):
+
+| Переменная | Цвет | Где |
+|---|---|---|
+| `--hero-folder` | `#C6A886` | папка |
+| `--hero-folder-text` | `#776550` | More, Visual designer |
+| `--hero-paper` | `#D3DEE2` | листок CV и листок за папкой |
+| `--hero-paper-corner` | `#B3C4CC` | загнутый уголок |
+| `--hero-paper-text` | `#92A4AC` | CV и скрепка |
+| `--hero-mail` | `#028565` | Mail |
+| `--hero-telegram` | `#457CAA` | Telegram |
+
+**Ховеры** (только с мышью, длительность 0.35 с, плавное замедление в конце):
+- Папка: листок за папкой выравнивается из наклона 5°, стрелка ↖ наклоняется на −10°.
+- CV: загнутый уголок растёт 59 → 79, скрепка наклоняется на 10°.
+- Mail: конверт наклоняется на 7° и **открывается**: клапан поворачивается вокруг верхнего края и откидывается вверх, внутри видна складка (Figma, node 4586-2300). Движется синхронно с наклоном.
+- Telegram: облачко наклоняется на −7°, внутри по очереди быстро загораются и гаснут три точки. Когда курсор уходит, точки плавно гаснут.
+
+**Ссылки** (почта, ник в Telegram, PDF с резюме) задаются в `CONTACTS` в [src/config.js](src/config.js). Пока там пусто, элементы выглядят так же, но не кликаются. «More» пока никуда не ведёт: подключим, когда будет страница «обо мне».
+
+### Стили текста
+
+Общие классы в [src/styles/text.css](src/styles/text.css), их можно ставить на любой текст:
+
+| Класс | Размер | Где сейчас |
+|---|---|---|
+| `text-display` | 56, line-height 0.9 | имя |
+| `text-heading` | 42 | More, CV, Mail, Telegram, Visual designer |
+| `text-title` | 28 | название карточки |
+| `text-label` | 22 | теги |
+| `text-trim` | — | убирает пустоту над заглавными и под строкой, как Trim в Figma |
+
+Все Medium (500). Размеры в единицах макета.
+
+### Иконки
+
+SVG-компоненты в [src/components/icons/](src/components/icons/): `IconArrow`, `IconClip`, `IconMail`, `IconTelegram`. Цвет берут из текста вокруг (`currentColor`), размер как в Figma. Использование: `<IconMail />`, `<IconMail open />` (открытый конверт), `<IconTelegram typing />` (мигающие точки).
 
 ### Декор (позже)
 
@@ -193,6 +244,7 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 В CSS для этого две переменные:
 - `--u` — единица макета, уже с увеличением. Через неё задаются все размеры элементов.
 - `--col-width` — ширина колонки.
+- `--hero-u` — единица хиро-блока (при 3–4 колонках равна `--u`).
 
 ## 5. Раскладка (Pinterest)
 
@@ -226,9 +278,14 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 
 | Файл | Что внутри |
 |---|---|
-| [src/config.js](src/config.js) | ссылка на таблицу |
+| [src/config.js](src/config.js) | ссылка на таблицу, контакты для хиро |
 | [src/index.css](src/index.css) | шрифт, фон, `--u` |
-| [src/lib/scale.js](src/lib/scale.js) | размеры сетки из макета, правило выбора числа колонок |
+| [src/styles/text.css](src/styles/text.css) | общие стили текста |
+| [src/components/hero/](src/components/hero/) | хиро-блок: `Hero`, `NameFolder`, `CvSheet`, `ContactButton`, стили и цвета в `Hero.css` |
+| [src/components/icons/](src/components/icons/) | SVG-иконки |
+| [src/assets/portrait.jpg](src/assets/portrait.jpg) | фото в хиро |
+| [src/lib/tween.js](src/lib/tween.js), [src/lib/hover.js](src/lib/hover.js) | плавная смена формы (клапан конверта), отслеживание ховера |
+| [src/lib/scale.js](src/lib/scale.js) | размеры сетки из макета, правило выбора числа колонок, единица хиро |
 | [src/lib/masonry.js](src/lib/masonry.js) | расчёт Pinterest-раскладки |
 | [src/data/sheet.js](src/data/sheet.js) | чтение таблицы, Dropbox-ссылки, адреса проектов |
 | [src/components/Card.jsx](src/components/Card.jsx) + [Card.css](src/components/Card.css) | карточка, ховер с увеличением |
@@ -236,6 +293,7 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 | [src/lib/media.js](src/lib/media.js) | проверка, есть ли у устройства мышь (ховер) |
 | [src/components/Tag.jsx](src/components/Tag.jsx) + [Tag.css](src/components/Tag.css) | теги: список и стили |
 | [src/components/Masonry.jsx](src/components/Masonry.jsx) | сетка и серые плашки при загрузке |
+| [src/components/Divider.jsx](src/components/Divider.jsx) | пунктирный разделитель |
 | [src/pages/](src/pages/) | страницы: главная, проект (заглушка), 404, общая обёртка |
 | [src/main.jsx](src/main.jsx) | список адресов сайта |
 
@@ -250,7 +308,7 @@ https://docs.google.com/spreadsheets/d/1pnzyYj-AiN_Fnu-Ul1sIxMGURj48NZmY_lajxVsv
 3. ☑ Роутинг: адреса, «назад/вперёд», заглушка страницы проекта
 4. ☑ Мобильные размеры: +30% на узких экранах
 5. ☐ Декор
-6. ☐ Хиро-блок, подвал
+6. ☑ Хиро-блок · ☐ подвал
 7. ☐ Страницы проектов
 8. ☐ Иконка вкладки (favicon) и название сайта во вкладке: сейчас `Portfolio`, задаётся в `index.html`
 9. ☐ Хостинг (Vercel или Netlify): подключается к GitHub один раз, дальше контент обновляется из таблицы

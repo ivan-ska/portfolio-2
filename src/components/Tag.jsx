@@ -10,5 +10,5 @@ const VARIANTS = {
 
 export default function Tag({ name }) {
   const variant = VARIANTS[name.toLowerCase()] ?? 'default'
-  return <span className={`tag tag--${variant}`}>{name}</span>
+  return <span className={`tag tag--${variant} text-label`}>{name}</span>
 }

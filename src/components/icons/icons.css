@@ -1,0 +1,71 @@
+/* Иконки. Размер — как в Figma, в единицах макета.
+   Цвет берётся из color родителя (currentColor). */
+.icon {
+  display: block;
+  flex-shrink: 0;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+}
+
+/* Заливка цветом фона: перекрывает линии под собой */
+.icon__fill {
+  fill: var(--icon-background, #fff);
+}
+
+.icon-arrow,
+.icon-clip {
+  width: calc(32 * var(--u));
+  height: calc(32 * var(--u));
+}
+
+.icon-mail,
+.icon-telegram {
+  width: calc(54 * var(--u));
+  height: calc(36 * var(--u));
+}
+
+/* Точки «печатает…» в Telegram: появляются и исчезают по очереди.
+   Когда курсор уходит, точки замирают и вместе плавно гаснут. */
+.icon-telegram__dots {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.icon-telegram.is-typing .icon-telegram__dots {
+  opacity: 1;
+  transition: none;
+}
+
+.icon-telegram__dot {
+  opacity: 0;
+  animation: telegram-dot 1.2s infinite both paused;
+}
+
+.icon-telegram.is-typing .icon-telegram__dot {
+  animation-play-state: running;
+}
+
+.icon-telegram__dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.icon-telegram__dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes telegram-dot {
+  0% { opacity: 0; }
+  6% { opacity: 1; }
+  50% { opacity: 1; }
+  56% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-telegram__dot {
+    animation: none;
+    opacity: 1;
+  }
+}

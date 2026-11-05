@@ -6,9 +6,6 @@
   min-width: 0;
   padding: var(--bleed) 0;
   margin: calc(-1 * var(--bleed)) 0;
-  font-size: calc(28 * var(--u));
-  font-weight: 500;
-  line-height: 1;
 }
 
 .card-title__track {

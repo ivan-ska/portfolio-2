@@ -78,7 +78,7 @@ export default function CardTitle({ text, active }) {
   }, [running, textWidth])
 
   return (
-    <div ref={boxRef} className={`card-title${overflowing ? ' is-overflowing' : ''}`}>
+    <div ref={boxRef} className={`card-title text-title${overflowing ? ' is-overflowing' : ''}`}>
       <div ref={trackRef} className="card-title__track">
         <span ref={textRef}>{text}</span>
         {overflowing && <span aria-hidden="true">{text}</span>}
