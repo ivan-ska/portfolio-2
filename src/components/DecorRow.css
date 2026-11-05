@@ -1,0 +1,24 @@
+/* Иконки стоят в ряд на всю ширину колонки. Ширины подобраны так,
+   что промежутки между ними получаются как в макете (см. DECOR_GAP). */
+.decor-row {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: var(--col-width);
+  pointer-events: none;
+}
+
+.decor-row__icon {
+  height: 100%;
+  pointer-events: auto; /* сам ряд клики пропускает, а иконки ловят */
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* без серой вспышки при тапе на телефоне */
+}
+
+.decor-row__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}

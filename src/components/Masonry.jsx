@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 import { useProjects } from '../data/projectsContext'
+import { SESSION_SEED } from '../lib/decor'
 import { computeLayout } from '../lib/masonry'
 import { GRID, useScale } from '../lib/scale'
 import Card from './Card'
+import DecorRow from './DecorRow'
 import './Masonry.css'
 
-// Pinterest-сетка. Считает, куда поставить каждую карточку (см. lib/masonry.js),
-// и ставит её туда абсолютным позиционированием.
+// Pinterest-сетка. Считает, куда поставить каждую карточку и блок с иконками
+// (см. lib/masonry.js), и ставит их туда абсолютным позиционированием.
 export default function Masonry({ projects }) {
   const { cols, u, colWidth } = useScale()
   const { images, reportImage } = useProjects()
@@ -17,11 +19,14 @@ export default function Masonry({ projects }) {
         projects.map((project) => images[project.image]?.ratio ?? null),
         cols,
         colWidth,
+        SESSION_SEED,
       ),
     [projects, images, cols, colWidth],
   )
 
   const nothingPlaced = !layout.positions.some(Boolean)
+  const left = (col) => (GRID.pad + col * (colWidth + GRID.gap)) * u
+  const top = (y) => (GRID.top + y) * u
 
   return (
     <div className="masonry" style={{ height: layout.height * u }}>
@@ -29,10 +34,7 @@ export default function Masonry({ projects }) {
 
       {projects.map((project, i) => {
         const position = layout.positions[i]
-        const style = position && {
-          left: (GRID.pad + position.col * (colWidth + GRID.gap)) * u,
-          top: (GRID.top + position.y) * u,
-        }
+        const style = position && { left: left(position.col), top: top(position.y) }
         return (
           <Card
             key={project.slug}
@@ -43,6 +45,14 @@ export default function Masonry({ projects }) {
           />
         )
       })}
+
+      {layout.decors.map((decor, i) => (
+        <DecorRow
+          key={i}
+          icons={decor.set.slice(0, decor.size)}
+          style={{ left: left(decor.col), top: top(decor.y), height: decor.height * u }}
+        />
+      ))}
     </div>
   )
 }

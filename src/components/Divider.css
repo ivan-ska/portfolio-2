@@ -1,17 +1,24 @@
-/* Пунктир: штрих 8, промежуток 8, толщина 4. На краях половинки штриха,
-   а сам рисунок чуть растягивается, чтобы ровно уложиться в ширину (как в Figma). */
+/* Пунктир: штрих 8, промежуток 8, толщина 4. Все штрихи одной длины,
+   крайние стоят ровно в краях, а промежутки чуть растягиваются под ширину.
+
+   Как это сделано: рисунок «штрих + промежуток» повторяется с space — целое число
+   раз, первый у левого края, последний у правого. Чтобы у правого края стоял штрих,
+   а не промежуток, рисунок раскладывается на один промежуток шире линии (padding-right),
+   а рисуется только в пределах самой линии (background-clip). */
 .divider {
   --dash: calc(8 * var(--u));
+  --dash-gap: calc(8 * var(--u));
 
   height: calc(4 * var(--u));
-  margin: 0 calc(12 * var(--u));
+  margin: 0 calc(12 * var(--u) - var(--dash-gap)) 0 calc(12 * var(--u));
+  padding: 0 var(--dash-gap) 0 0;
   border: 0;
   background-image: linear-gradient(
     to right,
-    #d3dee2 25%,
-    transparent 25% 75%,
-    #d3dee2 75%
+    #d3dee2 var(--dash),
+    transparent var(--dash)
   );
-  background-size: calc(2 * var(--dash)) 100%;
-  background-repeat: round;
+  background-size: calc(var(--dash) + var(--dash-gap)) 100%;
+  background-repeat: space no-repeat;
+  background-clip: content-box;
 }
